@@ -14,4 +14,11 @@ public abstract class BannerAdapter {
      * @return
      */
     public abstract View getView(int position);
+
+
+    /**
+     * 获取轮播的数量
+     * @return
+     */
+    public abstract int getCount();
 }

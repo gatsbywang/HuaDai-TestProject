@@ -28,9 +28,17 @@ public class DotIndicatorView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        if (mDrawable != null) {
+            mDrawable.setBounds(0,0,getMeasuredWidth(),getMeasuredHeight());
+            mDrawable.draw(canvas);
+        }
     }
 
+    /**
+     * 设置drawable
+     *
+     * @param drawable
+     */
     public void setDrawable(Drawable drawable) {
         this.mDrawable = drawable;
         invalidate();

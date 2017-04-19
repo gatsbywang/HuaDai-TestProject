@@ -17,8 +17,9 @@ public class MainActivity extends AppCompatActivity {
         mBannerView = (BannerView) findViewById(R.id.banner_view);
         mBannerView.setAdapter(new BannerAdapter() {
             @Override
-            public View getView(int position) {
-                ImageView itemImageView = new ImageView(MainActivity.this);
+            public View getView(int position, View converView) {
+                ImageView itemImageView = converView == null ? new ImageView(MainActivity.this) : (ImageView) converView;
+                itemImageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 itemImageView.setImageResource(R.drawable.banner_default);
                 return itemImageView;
             }
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
             public int getCount() {
                 return 5;
             }
-        });
 
+        });
         mBannerView.startRoll();
     }
 }

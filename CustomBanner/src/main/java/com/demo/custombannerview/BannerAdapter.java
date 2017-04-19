@@ -10,15 +10,23 @@ import android.view.View;
 public abstract class BannerAdapter {
     /**
      * 根据位置获取view
+     *
      * @param position
+     * @param converView
      * @return
      */
-    public abstract View getView(int position);
+    public abstract View getView(int position, View converView);
 
 
     /**
      * 获取轮播的数量
+     *
      * @return
      */
     public abstract int getCount();
+
+
+    public String getIndicatorText(int position){
+        return "";
+    }
 }

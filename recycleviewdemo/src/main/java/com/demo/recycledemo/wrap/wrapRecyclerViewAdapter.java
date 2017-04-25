@@ -15,6 +15,8 @@ public class wrapRecyclerViewAdapter extends RecyclerView.Adapter {
     private RecyclerView.Adapter mAdapter;
 
     private SparseArray<View> mHeaders, mFooters;
+    private int BASE_HEADER_KEY = 1000000;
+    private int BASE_FOOTER_KEY = 1000000;
 
     public wrapRecyclerViewAdapter(RecyclerView.Adapter adapter) {
         this.mAdapter = adapter;
@@ -91,4 +93,29 @@ public class wrapRecyclerViewAdapter extends RecyclerView.Adapter {
             return mHeaders.size() + mFooters.size();
         }
     }
+
+    public void addHeaderView(View headerView) {
+        if (mHeaders.indexOfValue(headerView) == -1) {
+            mHeaders.put(BASE_HEADER_KEY++, headerView);
+        }
+    }
+
+    public void removeHeaderView(View headerView) {
+        if (mHeaders.indexOfValue(headerView) != -1) {
+            mHeaders.removeAt(mHeaders.indexOfValue(headerView));
+        }
+    }
+
+    public void addFooterView(View footerView) {
+        if (mFooters.indexOfValue(footerView) == -1) {
+            mFooters.put(BASE_HEADER_KEY++, footerView);
+        }
+    }
+
+    public void removeFooterView(View footerView) {
+        if (mFooters.indexOfValue(footerView) != -1) {
+            mFooters.removeAt(mFooters.indexOfValue(footerView));
+        }
+    }
+
 }

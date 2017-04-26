@@ -14,6 +14,38 @@ import android.view.View;
 public class WrapRecyclerView extends RecyclerView {
     private WrapRecyclerViewAdapter mAdapter;
 
+    private AdapterDataObserver mObserver = new AdapterDataObserver() {
+        @Override
+        public void onChanged() {
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount) {
+            super.onItemRangeChanged(positionStart, itemCount);
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
+            super.onItemRangeChanged(positionStart, itemCount, payload);
+        }
+
+        @Override
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            super.onItemRangeInserted(positionStart, itemCount);
+        }
+
+        @Override
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
+            super.onItemRangeRemoved(positionStart, itemCount);
+        }
+
+        @Override
+        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+        }
+    };
+
     public WrapRecyclerView(Context context) {
         this(context, null);
     }
@@ -32,6 +64,7 @@ public class WrapRecyclerView extends RecyclerView {
             mAdapter = (WrapRecyclerViewAdapter) adapter;
         } else {
             mAdapter = new WrapRecyclerViewAdapter(adapter);
+            adapter.registerAdapterDataObserver(mObserver);
         }
         super.setAdapter(mAdapter);
     }

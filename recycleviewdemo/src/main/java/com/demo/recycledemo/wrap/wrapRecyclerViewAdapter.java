@@ -10,7 +10,7 @@ import android.view.ViewGroup;
  * Email:   gatsbywang@126.com
  */
 
-public class wrapRecyclerViewAdapter extends RecyclerView.Adapter {
+public class WrapRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private RecyclerView.Adapter mAdapter;
 
@@ -18,7 +18,7 @@ public class wrapRecyclerViewAdapter extends RecyclerView.Adapter {
     private int BASE_HEADER_KEY = 1000000;
     private int BASE_FOOTER_KEY = 1000000;
 
-    public wrapRecyclerViewAdapter(RecyclerView.Adapter adapter) {
+    public WrapRecyclerViewAdapter(RecyclerView.Adapter adapter) {
         this.mAdapter = adapter;
         mHeaders = new SparseArray<>();
         mFooters = new SparseArray<>();
@@ -26,20 +26,24 @@ public class wrapRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mHeaders.indexOfKey(viewType) == 0) {
+        if (mHeaders.indexOfKey(viewType) >= 0) {
             return createHeaderViewHolder(mHeaders.get(viewType));
-        } else if (mFooters.indexOfKey(viewType) == 0) {
+        } else if (mFooters.indexOfKey(viewType) >= 0) {
             return createFooterViewHolder(mFooters.get(viewType));
         }
         return mAdapter.onCreateViewHolder(parent, viewType);
     }
 
     private RecyclerView.ViewHolder createFooterViewHolder(View view) {
-        return null;
+        return new RecyclerView.ViewHolder(view) {
+
+        };
     }
 
     private RecyclerView.ViewHolder createHeaderViewHolder(View view) {
-        return null;
+        return new RecyclerView.ViewHolder(view) {
+
+        };
     }
 
     @Override
@@ -101,19 +105,19 @@ public class wrapRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     public void removeHeaderView(View headerView) {
-        if (mHeaders.indexOfValue(headerView) != -1) {
+        if (mHeaders.indexOfValue(headerView) >= 0) {
             mHeaders.removeAt(mHeaders.indexOfValue(headerView));
         }
     }
 
     public void addFooterView(View footerView) {
         if (mFooters.indexOfValue(footerView) == -1) {
-            mFooters.put(BASE_HEADER_KEY++, footerView);
+            mFooters.put(BASE_FOOTER_KEY++, footerView);
         }
     }
 
     public void removeFooterView(View footerView) {
-        if (mFooters.indexOfValue(footerView) != -1) {
+        if (mFooters.indexOfValue(footerView) >= 0) {
             mFooters.removeAt(mFooters.indexOfValue(footerView));
         }
     }

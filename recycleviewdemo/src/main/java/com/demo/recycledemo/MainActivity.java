@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.demo.recycledemo.BaseUse.BaseUseActivity;
+import com.demo.recycledemo.wrap.HeaderAndFooterAdapterActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,4 +26,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * 基本使用
+     *
+     * @param view
+     */
+    public void headerAndFooterClick(View view) {
+        Intent intent = HeaderAndFooterAdapterActivity.buildStartIntent(this);
+        startActivity(intent);
+    }
 }

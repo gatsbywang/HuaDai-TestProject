@@ -53,7 +53,8 @@ public abstract class AbsNavigationBar<P extends AbsNavigationBar.Builder.AbsNav
     private void createAndBindView() {
         if (mParams.mParent == null) {
             if (mParams.mContext instanceof Activity) {
-                ViewGroup root = (ViewGroup) ((Activity) (mParams.mContext)).findViewById(android.R.id.content);
+//                ViewGroup root = (ViewGroup) ((Activity) (mParams.mContext)).findViewById(android.R.id.content);
+                ViewGroup root = (ViewGroup) ((Activity) (mParams.mContext)).getWindow().getDecorView();
                 mParams.mParent = (ViewGroup) root.getChildAt(0);
             }
         }

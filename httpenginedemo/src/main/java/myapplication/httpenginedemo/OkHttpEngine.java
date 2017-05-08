@@ -22,7 +22,7 @@ import okhttp3.Response;
 /**
  * Created by 花歹 on 2017/5/5.
  * Email:   gatsbywang@126.com
- * Description:
+ * Description: okhttp引擎
  * Thought:
  */
 
@@ -32,7 +32,7 @@ public class OkHttpEngine implements IHttpEngine {
     private final String TAG = OkHttpEngine.class.getName();
 
     @Override
-    public void get(Context context, String url, Map<String, Object> header, Map<String, Object> params, final EngineCallback callback) {
+    public void get(Context context, String url, Map<String, String> header, Map<String, Object> params, final EngineCallback callback) {
         url = HttpUtils.jointParams(url, params);
         Log.e(TAG, "[Request] Url: " + url + "\n" + "Params: " + params.toString() + "\n"
                 + "Type: Get");
@@ -56,7 +56,7 @@ public class OkHttpEngine implements IHttpEngine {
     }
 
     @Override
-    public void post(Context context, String url, Map<String, Object> header, Map<String, Object> params, final EngineCallback callback) {
+    public void post(Context context, String url, Map<String, String> header, Map<String, Object> params, final EngineCallback callback) {
         String jointUrl = HttpUtils.jointParams(url, params);
         Log.e(TAG, "[Request] Url: " + url + "\n" + "Params: " + params.toString() + "\n"
                 + "Type: Post");
@@ -87,6 +87,11 @@ public class OkHttpEngine implements IHttpEngine {
         });
     }
 
+    /**
+     * 获取请求body
+     * @param params
+     * @return
+     */
     protected RequestBody appendBody(Map<String, Object> params) {
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
@@ -94,6 +99,11 @@ public class OkHttpEngine implements IHttpEngine {
         return builder.build();
     }
 
+    /**
+     * 封装参数
+     * @param builder
+     * @param params
+     */
     private void addParams(MultipartBody.Builder builder, Map<String, Object> params) {
         if (params != null && !params.isEmpty()) {
             for (String key : params.keySet()) {
@@ -112,6 +122,11 @@ public class OkHttpEngine implements IHttpEngine {
         }
     }
 
+    /**
+     * 获取文件类型
+     * @param path
+     * @return
+     */
     private String guessMimeType(String path) {
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
         String contentType = fileNameMap.getContentTypeFor(path);

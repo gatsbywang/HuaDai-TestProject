@@ -28,8 +28,8 @@ public class HttpUtils {
     //请求参数
     private Map<String, Object> mParams;
 
-    //请求参数
-    private Map<String, Object> mHeader;
+    //请求头
+    private Map<String, String> mHeader;
 
     //请求方式
     private int mType;
@@ -71,12 +71,12 @@ public class HttpUtils {
     }
 
     /**
-     * 构造参数
+     * 构造头部
      *
      * @param header
      * @return
      */
-    public HttpUtils header(Map<String, Object> header) {
+    public HttpUtils header(Map<String, String> header) {
         this.mHeader.putAll(header);
         return this;
     }
@@ -104,20 +104,36 @@ public class HttpUtils {
         return this;
     }
 
+    /**
+     * get请求
+     *
+     * @return
+     */
     public HttpUtils get() {
         this.mType = GET_TYPE;
         return this;
     }
 
+    /**
+     * post请求
+     *
+     * @return
+     */
     public HttpUtils post() {
         this.mType = POST_TYPE;
         return this;
     }
 
+    /**
+     * 执行请求
+     *
+     * @param callback
+     */
     public void execute(EngineCallback callback) {
         if (callback == null) {
             callback = EngineCallback.DEFAULT_CALL_BACK;
         }
+        callback.onPreExecute(mContext, mHeader, mParams);
         switch (mType) {
             case GET_TYPE:
                 get(mUrl, mHeader, mParams, callback);
@@ -129,22 +145,54 @@ public class HttpUtils {
         }
     }
 
+    /**
+     * 无回调的请求
+     */
     public void execute() {
         execute(null);
     }
 
-    public void exchangeEngine(IHttpEngine httpEngine) {
+    /**
+     * 设置http引擎
+     *
+     * @param httpEngine
+     */
+    public HttpUtils exchangeEngine(IHttpEngine httpEngine) {
         mHttpEngine = httpEngine;
+        return this;
     }
 
-    private void get(String url, Map<String, Object> header, Map<String, Object> params, EngineCallback callback) {
+    /**
+     * 调用引擎的get请求
+     *
+     * @param url
+     * @param header
+     * @param params
+     * @param callback
+     */
+    private void get(String url, Map<String, String> header, Map<String, Object> params, EngineCallback callback) {
         mHttpEngine.get(mContext, url, header, params, callback);
     }
 
-    private void post(String url, Map<String, Object> header, Map<String, Object> params, EngineCallback callback) {
+    /**
+     * 调用引擎的post请求
+     *
+     * @param url
+     * @param header
+     * @param params
+     * @param callback
+     */
+    private void post(String url, Map<String, String> header, Map<String, Object> params, EngineCallback callback) {
         mHttpEngine.post(mContext, url, header, params, callback);
     }
 
+    /**
+     * 将url与参数拼接
+     *
+     * @param url
+     * @param params
+     * @return
+     */
     public static String jointParams(String url, Map<String, Object> params) {
         if (params == null || params.isEmpty()) {
             return url;
@@ -168,6 +216,8 @@ public class HttpUtils {
     }
 
     /**
+     * 获取父类的class
+     *
      * @param object
      * @return
      */

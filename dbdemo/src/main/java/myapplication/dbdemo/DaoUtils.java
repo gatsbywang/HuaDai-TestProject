@@ -13,37 +13,41 @@ public class DaoUtils {
         String value = null;
         switch (type) {
             case "String":
-                value = "text";
+                value = " text";
                 break;
             case "int":
             case "Integer":
-                value = "integer";
+                value = " integer";
                 break;
             case "boolean":
             case "Boolean":
-                value = "boolean";
+                value = " boolean";
                 break;
             case "float":
             case "Float":
-                value = "float";
+                value = " float";
                 break;
             case "double":
             case "Double":
-                value = "double";
+                value = " double";
                 break;
             case "char":
             case "Character":
-                value = "varchar";
+                value = " varchar";
                 break;
             case "long":
             case "Long":
-                value = "long";
+                value = " long";
                 break;
 
         }
-        if (value == null) {
-            throw new IllegalArgumentException(type + " not support! ");
-        }
+//        if (value == null) {
+//            throw new IllegalArgumentException(type + " not support! ");
+//        }
         return value;
+    }
+
+    public static String getTableName(Class<?> clazz) {
+        return clazz.getSimpleName();
     }
 }

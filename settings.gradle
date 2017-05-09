@@ -1,3 +1,6 @@
 //include ':CustomFixBug'
 //include ':CustomBanner'
-include ':recycleviewdemo', ':basedialogdemo', ':absnavigationbardemo'
+//include ':recycleviewdemo'
+//include ':basedialogdemo'
+//include ':absnavigationbardemo'
+include ':httpenginedemo', ':dbdemo'

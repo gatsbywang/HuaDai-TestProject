@@ -22,5 +22,5 @@ public interface IDaoSupport<T> {
      * @param t
      * @return
      */
-    public int insert(T t);
+    public long insert(T t);
 }

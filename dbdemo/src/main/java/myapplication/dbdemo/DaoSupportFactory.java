@@ -2,6 +2,7 @@ package myapplication.dbdemo;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 
@@ -15,6 +16,7 @@ import java.io.File;
 public class DaoSupportFactory {
 
     private static DaoSupportFactory mFactory;
+    private final String TAG = DaoSupportFactory.class.getName();
     private SQLiteDatabase mSqLiteDatabase;
 
     //持有外部数据库的引用
@@ -29,6 +31,7 @@ public class DaoSupportFactory {
         }
         //创建数据库文件
         File dbFile = new File(dbDir, "rental.db");
+        Log.e(TAG, dbFile.getAbsolutePath());
         //打开或者创建一个数据库
         mSqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
     }

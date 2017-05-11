@@ -9,6 +9,8 @@ package myapplication.dbdemo;
 
 public class DaoUtils {
 
+    private static final String TAG = DaoUtils.class.getName();
+
     public static String getColumnType(String type) {
         String value = null;
         switch (type) {
@@ -49,5 +51,35 @@ public class DaoUtils {
 
     public static String getTableName(Class<?> clazz) {
         return clazz.getSimpleName();
+    }
+
+    public static String capitalize(String fieldType) {
+        switch (fieldType) {
+            case "int":
+                fieldType = "Int";
+                break;
+            case "long":
+                fieldType = "Long";
+                break;
+            case "float":
+                fieldType = "Float";
+                break;
+            case "double":
+                fieldType = "Double";
+                break;
+            case "char":
+                fieldType = "Char";
+                break;
+            case "byte":
+                fieldType = "Byte";
+                break;
+            case "short":
+                fieldType = "Short";
+                break;
+            case "boolean":
+                fieldType = "Boolean";
+                break;
+        }
+        return fieldType;
     }
 }

@@ -142,135 +142,21 @@ public class DaoSupport<T> implements IDaoSupport<T> {
         return values;
     }
 
+//    @Override
+//    public List<T> query() {
+//        Cursor cursor = mSqLiteDatabase.query(DaoUtils.getTableName(mClazz), null, null, null, null, null, null);
+//        return cursorToList(cursor);
+//    }
+
+    private QuerySupport<T> mQuerySupport;
+
     @Override
-    public List<T> query() {
-        Cursor cursor = mSqLiteDatabase.query(DaoUtils.getTableName(mClazz), null, null, null, null, null, null);
-        return cursorToList(cursor);
-    }
-
-    /**
-     * 将cursor中的数据转换为List集合
-     *
-     * @param cursor
-     * @return
-     */
-    private List<T> cursorToList(Cursor cursor) {
-
-        List<T> list = new ArrayList<>();
-        if (cursor != null && cursor.moveToFirst()) {
-            //不断从游标获取数据
-            do {
-                try {
-                    T instance = mClazz.newInstance();
-                    Field[] fields = mClazz.getDeclaredFields();
-                    for (Field field : fields) {
-                        field.setAccessible(true);
-                        String name = field.getName();
-
-                        //获取在第几列
-                        int columnIndex = cursor.getColumnIndex(name);
-                        if (columnIndex == -1) {
-
-                        }
-
-                        Method cursorMethod = cursorMethod(field.getType());
-
-                        if (cursorMethod != null) {
-                            //通过反射执行方法,得到
-                            Object value = cursorMethod.invoke(cursor, columnIndex);
-                            if (value == null) {
-                                continue;
-                            }
-
-                            //处理特殊部分
-                            if (field.getType() == boolean.class || field.getType() == Boolean.class) {
-                                if ("0".equals(String.valueOf(value))) {
-                                    value = false;
-                                } else if ("1".equals(String.valueOf(value))) {
-                                    value = true;
-                                }
-                            } else if (field.getType() == char.class || field.getType() == Character.class) {
-                                value = ((String) value).charAt(0);
-
-                            } else if (field.getType() == Date.class) {
-                                long date = (long) value;
-                                if (date < 0) {
-                                    value = null;
-                                } else {
-                                    value = new Date(date);
-                                }
-                            }
-
-                            //反射注入
-                            field.set(instance, value);
-                        }
-                    }
-
-
-                    //
-                    list.add(instance);
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                }
-
-            } while (cursor.moveToNext());
+    public QuerySupport<T> querySupport() {
+        if (mQuerySupport == null) {
+            mQuerySupport = new QuerySupport<>(mSqLiteDatabase, mClazz);
         }
-        cursor.close();
-        return list;
+        return mQuerySupport;
     }
-
-    /**
-     * 通过类型获取游标的方法（如curosr.getInt,还是curosr.getLong）
-     *
-     * @param type
-     * @return
-     */
-    private Method cursorMethod(Class<?> type) throws NoSuchMethodException {
-        //cursor.getInt(),cursor.getLong，返回的的是getInt或者getgLong，或者其他
-        String methodName = getColumnMethodName(type);
-
-        Method method = Cursor.class.getMethod(methodName, int.class);
-        return method;
-    }
-
-    /**
-     * 拼接cursor方法，如getLong,则应该为"get"+"Long"
-     *
-     * @param type T的属性变量类型
-     * @return
-     */
-    private String getColumnMethodName(Class<?> type) {
-        String typeName;
-        if (type.isPrimitive()) {
-            typeName = DaoUtils.capitalize(type.getName());
-        } else {
-            typeName = type.getSimpleName();
-        }
-        String methodName = "get" + typeName;
-        switch (methodName) {
-            case "getBoolean":
-                methodName = "getInt";
-                break;
-            case "getChar":
-            case "getCharacter":
-                methodName = "getString";
-                break;
-            case "getDate":
-                methodName = "getLong";
-                break;
-            case "getInteger":
-                methodName = "getInt";
-                break;
-        }
-        return methodName;
-    }
-
 
     @Override
     public int delete(String whereClause, String[] whereArgs) {

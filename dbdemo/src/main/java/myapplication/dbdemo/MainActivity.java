@@ -3,13 +3,15 @@ package myapplication.dbdemo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        IDaoSupport<Person> daoSupport = DaoSupportFactory.getFactory().getDao(Person.class);
+        IDaoSupport<Person> daoSupport = DaoSupportFactory.getFactory().getDao(Person.class);
 //        daoSupport.insert(new Person("huadai", 22));
 
 
@@ -21,5 +23,7 @@ public class MainActivity extends AppCompatActivity {
 //        DaoUtils.capitalize(byte.class.getName());
 //        DaoUtils.capitalize(short.class.getName());
 //        DaoUtils.capitalize(boolean.class.getName());
+
+        List<Person> persons = daoSupport.querySupport().selection("age = ?").selectionArgs("23").query();
     }
 }

@@ -38,15 +38,22 @@ public interface IDaoSupport<T> {
     public void insert(List<T> datas);
 
 
+//    /**
+//     * TODO 查询，优化成下面这种方式
+//     * List<Person> persons = daoSupport.querySupport().queryAll();
+//     * List<Person> persons = daoSupport.querySupport()
+//     * .selection("age = ?").selectionArgs("23").query();
+//     *
+//     * @return
+//     */
+//    public List<T> query();
+
+
     /**
-     * TODO 查询，优化成下面这种方式
-     * List<Person> persons = daoSupport.querySupport().queryAll();
-     * List<Person> persons = daoSupport.querySupport()
-     * .selection("age = ?").selectionArgs("23").query();
-     *
+     * 获取专门查询的支持类
      * @return
      */
-    public List<T> query();
+    QuerySupport<T> querySupport();
 
     /**
      * 删除

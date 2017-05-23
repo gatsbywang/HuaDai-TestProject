@@ -3,4 +3,6 @@
 //include ':recycleviewdemo'
 //include ':basedialogdemo'
 //include ':absnavigationbardemo'
-include ':httpenginedemo', ':dbdemo'
+//include ':httpenginedemo'
+//include ':dbdemo'
+include ':skindemo', ':secondskindemo'

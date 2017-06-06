@@ -6,9 +6,7 @@ import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -38,8 +36,7 @@ public class SkinResource {
             addAssetPathMethod.setAccessible(true);
 
             //反射执行方法，添加本地下载的皮肤
-            addAssetPathMethod.invoke(assetManager, Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + File.separator + "change.skin");
+            addAssetPathMethod.invoke(assetManager, skinPath);
             //创建属于皮肤的resource
             mSkinResource = new Resources(assetManager, superResource.getDisplayMetrics(),
                     superResource.getConfiguration());

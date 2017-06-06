@@ -17,15 +17,16 @@ import android.view.ViewParent;
 
 import com.demo.skin.skin.SkinAttrSupport;
 import com.demo.skin.skin.SkinManager;
+import com.demo.skin.skin.SkinResource;
 import com.demo.skin.skin.attr.SkinAttr;
 import com.demo.skin.skin.attr.SkinView;
+import com.demo.skin.skin.callback.ISkinChangeListener;
 import com.demo.skin.skin.support.SkinAppCompatViewInflater;
 
 import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by 花歹 on 2017/5/19.
@@ -34,7 +35,7 @@ import java.util.zip.Inflater;
  * Thought:
  */
 
-public class BaseSkinActivity extends AppCompatActivity implements LayoutInflaterFactory {
+public class BaseSkinActivity extends AppCompatActivity implements LayoutInflaterFactory,ISkinChangeListener {
 
     public SkinAppCompatViewInflater mAppCompatViewInflater;
 
@@ -58,13 +59,16 @@ public class BaseSkinActivity extends AppCompatActivity implements LayoutInflate
         //1、创建view
         //  If the Factory didn't handle it, let our createView() method try
         View view = createView(parent, name, context, attrs);
-//        Log.e(TAG, view + "");
+
         //2、解析属性 src textColor background 自定义属性
         if (view != null) {
             List<SkinAttr> skinAttrs = SkinAttrSupport.getSkinAttrs(context, attrs);
             SkinView skinView = new SkinView(view, skinAttrs);
             //3、统一交给SkinManager管理
             managerSkinView(skinView);
+
+            //4、判断要不要换肤
+            SkinManager.getInstance().checkChangeSkin(skinView);
         }
         return view;
     }
@@ -129,5 +133,10 @@ public class BaseSkinActivity extends AppCompatActivity implements LayoutInflate
             }
             parent = parent.getParent();
         }
+    }
+
+    @Override
+    public void changerSkin(SkinResource skinResource) {
+
     }
 }

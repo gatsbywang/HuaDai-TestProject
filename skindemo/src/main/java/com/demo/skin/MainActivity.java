@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.demo.skin.skin.SkinManager;
+import com.demo.skin.skin.SkinResource;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -75,4 +76,8 @@ public class MainActivity extends BaseSkinActivity {
         }
     }
 
+    @Override
+    public void changerSkin(SkinResource skinResource) {
+        //做一些第三方的改变
+    }
 }

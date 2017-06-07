@@ -87,7 +87,7 @@ public class BaseSkinActivity extends AppCompatActivity implements LayoutInflate
         skinViews.add(skinView);
     }
 
-    //    @Override
+//        @Override
     public View createView(View parent, final String name, @NonNull Context context,
                            @NonNull AttributeSet attrs) {
         if (mAppCompatViewInflater == null) {
@@ -138,5 +138,11 @@ public class BaseSkinActivity extends AppCompatActivity implements LayoutInflate
     @Override
     public void changerSkin(SkinResource skinResource) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        SkinManager.getInstance().unRegister(this);
+        super.onDestroy();
     }
 }

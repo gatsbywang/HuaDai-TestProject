@@ -24,6 +24,7 @@ public class SkinResource {
 
     public SkinResource(Context context, String skinPath) {
         try {
+
             //拿本地resource
             Resources superResource = context.getResources();
             //创建AssertManager
@@ -60,11 +61,12 @@ public class SkinResource {
      * 通过名字获取drawable
      *
      * @param resName
-     * @return
+     * @return 不能直接传Id 获取资源，插件中的Id肯定不一样
      */
     public Drawable getDrawablebyName(String resName) {
         try {
             //TODO 注意mipmap的情况
+
             int resId = mSkinResource.getIdentifier(resName, "drawable", mPackageName);
             Drawable drawable = mSkinResource.getDrawable(resId);
             return drawable;
@@ -79,7 +81,7 @@ public class SkinResource {
      * 通过名字获取颜色
      *
      * @param resName
-     * @return
+     * @return 不能直接传Id 获取资源，插件中的Id肯定不一样
      */
     public ColorStateList getColorbyName(String resName) {
         try {

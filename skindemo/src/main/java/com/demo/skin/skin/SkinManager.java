@@ -107,7 +107,7 @@ public class SkinManager {
 
         //保存皮肤的状态
         saveSkinStatus(skinPath);
-        return 0;
+        return SkinConfig.SKIN_CHANGE_SUCCESS;
     }
 
     /**
@@ -201,5 +201,13 @@ public class SkinManager {
             //不是空 就换一下
             skinView.skin();
         }
+    }
+
+    /**
+     * 防止内存泄露
+     * @param skinChangeListener
+     */
+    public void unRegister(ISkinChangeListener skinChangeListener) {
+        mSkinViews.remove(skinChangeListener);
     }
 }

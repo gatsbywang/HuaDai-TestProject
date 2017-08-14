@@ -19,5 +19,6 @@ public class MainActivity extends AppCompatActivity {
             //必须大于5.0
             startService(new Intent(this, JobWakeUpService.class));
         }
+
     }
 }

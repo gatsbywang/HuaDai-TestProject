@@ -1,5 +1,5 @@
 /*include ':CustomFixBug'
-include ':CustomBanner', ':bitmapcompressndkdemo'
+include ':CustomBanner', ':bitmapcompressndkdemo', ':dynamicdemo'
 include ':recycleviewdemo'
 include ':basedialogdemo'
 include ':absnavigationbardemo'
@@ -10,4 +10,5 @@ include ':ipcdemo'*/
 //include ':servicekeptalive'
 //include ':secondskindemo'
 //include ':doubleslide'
-include ':BitmapCompressNDKDemo'
+//include ':BitmapCompressNDKDemo'
+include ':dynamicdemo'

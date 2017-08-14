@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         //缩放下再进行加载成bitmap,避免内存溢出
         Bitmap bitmap = BitmapFactory.decodeFile(filePath,options);
         compressBitmap(bitmap, 30, outputfile);
+
     }
 
     /**

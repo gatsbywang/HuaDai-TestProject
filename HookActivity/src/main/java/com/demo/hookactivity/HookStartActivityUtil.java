@@ -1,5 +1,6 @@
 package com.demo.hookactivity;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -8,8 +9,10 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+
+import static java.lang.reflect.Proxy.newProxyInstance;
 
 /**
  * Created by 花歹 on 2017/8/14.
@@ -81,9 +84,18 @@ public class HookStartActivityUtil {
                     intentField.set(record, originIntent);
                 }
 
+                //由于AppCompatActivity会再次检测AndroidManifest，所以需要hook 相关方法
+                hookGetActivityInfo();
+
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
@@ -109,7 +121,7 @@ public class HookStartActivityUtil {
         Object iamInstance = mInstanceField.get(gDefault);
 
         Class<?> iamClass = Class.forName("android.app.IActivityManager");
-        Object proxyIamInstance = Proxy.newProxyInstance(HookStartActivityUtil.class.getClassLoader(), new Class[]{iamClass},
+        Object proxyIamInstance = newProxyInstance(HookStartActivityUtil.class.getClassLoader(), new Class[]{iamClass},
                 new startActivityInvocationHandler(iamInstance));
 
         //重新指定
@@ -143,4 +155,52 @@ public class HookStartActivityUtil {
             return method.invoke(mObject, args);
         }
     }
+
+
+    private void hookGetActivityInfo() throws ClassNotFoundException, NoSuchFieldException,
+            IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        // 兼容AppCompatActivity报错问题
+        //1、获取ActvityThread实例sCurrentActivityThread
+        Class<?> forName = Class.forName("android.app.ActivityThread");
+        Field field = forName.getDeclaredField("sCurrentActivityThread");
+        field.setAccessible(true);
+        Object activityThread = field.get(null);
+        //2、获取getPackageManager方法并执行，获得PackageManager实例，后面系统调用的时候直接获取缓存即可
+        Method getPackageManager = activityThread.getClass().getDeclaredMethod("getPackageManager");
+        Object iPackageManager = getPackageManager.invoke(activityThread);
+
+        //3、接着创建PackManager代理
+        PackageManagerHandler handler = new PackageManagerHandler(iPackageManager);
+        Class<?> iPackageManagerIntercept = Class.forName("android.content.pm.IPackageManager");
+        Object proxy = newProxyInstance(Thread.currentThread().getContextClassLoader(),
+                new Class<?>[]{iPackageManagerIntercept}, handler);
+
+        //4、将ActivityThread的sPackageManager替换为代理PackManager
+        Field iPackageManagerField = activityThread.getClass().getDeclaredField("sPackageManager");
+        iPackageManagerField.setAccessible(true);
+        iPackageManagerField.set(activityThread, proxy);
+
+    }
+
+    private class PackageManagerHandler implements InvocationHandler {
+
+        private final Object mObject;
+
+        public PackageManagerHandler(Object object) {
+            this.mObject = object;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+            if ("getActivityInfo".equals(method.getName())) {
+                //hook getActivityInfo方法,替换参数
+                ComponentName componentName = new ComponentName(mContext, mProxyClass);
+                args[0] = componentName;
+            }
+            return method.invoke(mObject, args);
+        }
+    }
+
+
 }

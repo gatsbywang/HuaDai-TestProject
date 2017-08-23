@@ -1,5 +1,5 @@
 /*include ':CustomFixBug'
-include ':CustomBanner', ':bitmapcompressndkdemo', ':dynamicdemo', ':HookActivity'
+include ':CustomBanner', ':bitmapcompressndkdemo', ':dynamicdemo', ':HookActivity', ':360DroidPlugin'
 include ':recycleviewdemo'
 include ':basedialogdemo'
 include ':absnavigationbardemo'
@@ -13,4 +13,5 @@ include ':doubleslide'
 include ':HookActivity'
 include ':BitmapCompressNDKDemo'
 include ':dynamicdemo'*/
-include ':HookActivity', ':DroidPlugin'
+include ':DroidPlugin'
+include ':360DroidPlugin'

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/360DroidPlugin/360DroidPlugin.iml" filepath="$PROJECT_DIR$/360DroidPlugin/360DroidPlugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DroidPlugin/DroidPlugin.iml" filepath="$PROJECT_DIR$/DroidPlugin/DroidPlugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HuaDai-TestProject.iml" filepath="$PROJECT_DIR$/HuaDai-TestProject.iml" />
+    </modules>
+  </component>
+</project>
